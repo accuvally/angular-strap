@@ -358,9 +358,14 @@
             } else {
               if (controller) {
                 element.on('changeDate', function (ev) {
-                  scope.$apply(function () {
+                  if (scope.$$phase) {
                     controller.$setViewValue(type === 'string' ? element.val() : ev.date);
-                  });
+                  }
+                  else {
+                    scope.$apply(function () {
+                      controller.$setViewValue(type === 'string' ? element.val() : ev.date);
+                    });
+                  }
                 });
               }
               element.datepicker(angular.extend(options, {
